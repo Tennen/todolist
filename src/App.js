@@ -40,6 +40,20 @@ class App extends Component {
 				}
 			})
 	}
+	editTodo = (cid, content) => {
+		post('/edit', { "ID": cid , "text": content })
+			.then(res => {
+				if(!res.err){
+					this.props.dispatch({
+						type: 'EDIT_TODO',
+						data: {
+							cid,
+							content,
+						}
+					})
+				}
+			})
+	}
 	componentWillMount(){
 		get('/todolist').then(res=>{
 			this.props.dispatch({
@@ -59,6 +73,7 @@ class App extends Component {
 	        	completed={ false } 
 	        	todos={ todos }
 	        	togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}
+	        	edittodo={ (cid, content) => { this.editTodo(cid, content) } }
 	       	/>
 	        <Chip 
 	        	style={ { marginLeft: '50px' } }

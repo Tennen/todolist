@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
-import { connect } from 'react-redux';
-import { post } from './Net/net';
+import TextField from 'material-ui/TextField';
 
 class Todo extends Component {
 	state = {
-		switch: null
+		switch: null,
+		isEditing: false,
+		content: '',
 	}
 	toggleCompleted = (e, checked) => {
 		if(this.state.switch){
@@ -28,13 +29,34 @@ class Todo extends Component {
 		})
 	}
 	testDbClick = () => {
-		alert(1);
+		this.setState({
+			isEditing: true
+		})
+	}
+	handleContentChange = (e, value) => {
+		this.setState({
+			content: value
+		})
+	}
+	handleEnter = (e) => {
+		const { cid, edittodo } = this.props
+		if(e.key === 'Enter'){
+			edittodo(cid, this.state.content)
+			this.setState({
+				isEditing: false
+			})
+		}
 	}
 	render(){
 		const { completed, content } = this.props;
 
-		return (
-			<ListItem 
+		return this.state.isEditing ? 
+			(<TextField 
+				hintText={ content }
+				onChange={ this.handleContentChange }
+				onKeyUp={ this.handleEnter }
+		    />)
+			: (<ListItem 
 				leftCheckbox={<Checkbox 
 					checked={ completed ? true : false }
 					onCheck={ this.toggleCompleted }/>
@@ -42,8 +64,7 @@ class Todo extends Component {
 				primaryText={ content }
 				style={ completed ? {textDecoration: 'line-through', color: 'gray'} : {} }
 				onDoubleClick={ this.testDbClick }
-			/>
-		)
+			/>)
 	}
 }
 

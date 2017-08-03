@@ -30,13 +30,23 @@ const todos = (state = [], action) => {
 
 		case 'TOGGLE_TODO':
 			const { cid } = action.data;
-			const findtarget = (todo) => {
+			const findTargetCompleted = (todo) => {
 				if(todo.ID == cid){
 					return Object.assign({}, todo, { completed: !todo.completed });
 				}
 				return todo;
 			}
-			return _.map(findtarget)(state);
+			return _.map(findTargetCompleted)(state);
+
+		case 'EDIT_TODO':
+			const { content } = action.data;
+			const findTargetContent = (todo) => {
+				if(todo.ID == action.data.cid){
+					return Object.assign({}, todo, { text: action.data.content });
+				}
+				return todo;
+			}
+			return _.map(findTargetContent)(state);
 		default:
 			return state;
 	}

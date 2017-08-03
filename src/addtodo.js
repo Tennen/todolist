@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
-import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
 class AddTodo extends Component {

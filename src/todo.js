@@ -7,7 +7,7 @@ import { post } from './Net/net';
 class Todo extends Component {
 	toggleCompleted = (e, checked) => {
 		const { completed, content, cid, dispatch } = this.props;
-		post('/toggle', { "ID": cid , "complete": !completed })
+		post('/toggle', { "ID": cid , "completed": !completed })
 			.then(res => {
 				if(!res.err){
 					dispatch({

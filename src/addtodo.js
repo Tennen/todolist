@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import { post } from './Net/net';
 
 class AddTodo extends Component {
 	state = {
@@ -15,24 +14,12 @@ class AddTodo extends Component {
 		})
 	}
 	submitInput = () => {
-		if(!this.state.message){
+		const { message } = this.state;
+		const { addtodo } = this.props;
+		if(!message){
 			return
 		}
-		let message = this.state.message;
-		post('/addtodo', { "content": this.state.message })
-			.then(res => {
-				console.log(res)
-				if(!res.err){
-					this.props.dispatch({
-						type: 'ADD_TODO', 
-						data: {
-							message, 
-							complete: 0,
-							id: res.id
-						}
-					})
-				}
-			})
+		addtodo(message);
 		this.setState({
 			message: ''
 		})

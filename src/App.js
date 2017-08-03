@@ -4,6 +4,7 @@ import TodoList from './todolist';
 import Addtodo from './addtodo';
 import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
+import { get, post } from './Net/net';
 
 class App extends Component {
 	showDoneList = () => {
@@ -11,11 +12,26 @@ class App extends Component {
 			type: "TOGGLE_SHOW",
 		})
 	}
+	addToDo = (msg) => {
+		post('/addtodo', { "content": msg })
+			.then(res => {
+				if(!res.err){
+					this.props.dispatch({
+						type: 'ADD_TODO', 
+						data: {
+							message: msg, 
+							completed: false,
+							id: res.id
+						}
+					})
+				}
+			})
+	}
 	render() {
 	    const { dispatch, todos, showDoneList } = this.props;
 	    return (
 	      <div style={ { width: '480px' } }>
-	        <Addtodo />
+	        <Addtodo addtodo={ (msg) => { this.addToDo(msg) } } />
 	        <TodoList 
 	        	completed={ false } 
 	        	 todos={ todos }

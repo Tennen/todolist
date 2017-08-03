@@ -29,10 +29,10 @@ const todos = (state = [], action) => {
 			]
 
 		case 'TOGGLE_TODO':
-			const { cid, completed } = action.data;
+			const { cid } = action.data;
 			const findtarget = (todo) => {
 				if(todo.ID == cid){
-					return Object.assign({}, todo, { completed });
+					return Object.assign({}, todo, { completed: !todo.completed });
 				}
 				return todo;
 			}

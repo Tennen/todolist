@@ -5,28 +5,22 @@ import { connect } from 'react-redux';
 import { post } from './Net/net';
 
 class Todo extends Component {
-	state = {
-		completed: this.props.completed,
-		content: this.props.content,
-		cid: this.props.cid,
-	}
 	toggleCompleted = (e, checked) => {
-		const check = this.state.checked? 0: 1;
-		post('/toggle', { "ID": this.state.cid , "complete": check})
+		const { completed, content, cid, dispatch } = this.props;
+		post('/toggle', { "ID": cid , "complete": !completed })
 			.then(res => {
 				if(!res.err){
-					this.props.dispatch({
+					dispatch({
 						type: 'TOGGLE_TODO',
 						data: {
-							cid: this.state.cid,
-							complete: check,
+							cid,
 						}
 					})
 				}
 			})
 	}
 	render(){
-		const { completed } = this.state;
+		const { completed, content } = this.props;
 
 		return (
 			<ListItem 
@@ -34,7 +28,7 @@ class Todo extends Component {
 					checked={ completed ? true : false }
 					onCheck={ this.toggleCompleted }/>
 				}
-				primaryText={ this.state.content }
+				primaryText={ content }
 				style={ completed ? {textDecoration: 'line-through', color: 'gray'} : {} }
 			/>
 		)

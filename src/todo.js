@@ -6,18 +6,8 @@ import { post } from './Net/net';
 
 class Todo extends Component {
 	toggleCompleted = (e, checked) => {
-		const { completed, content, cid, dispatch } = this.props;
-		post('/toggle', { "ID": cid , "completed": !completed })
-			.then(res => {
-				if(!res.err){
-					dispatch({
-						type: 'TOGGLE_TODO',
-						data: {
-							cid,
-						}
-					})
-				}
-			})
+		const { completed, content, cid, togglecompleted } = this.props;
+		togglecompleted(cid, completed)
 	}
 	render(){
 		const { completed, content } = this.props;

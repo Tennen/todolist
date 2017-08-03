@@ -7,13 +7,14 @@ import { map, filter, propEq, compose } from 'ramda';
 
 class TodoList extends Component {
 	render(){
-		const { dispatch, todos } = this.props;
+		const { todos } = this.props;
 		const objToItem = (todo) => {
 			return (<Todo
 				cid={ todo.ID }
 				key={ todo.ID }
 				content={ todo.text }
 				completed={ todo.completed }
+	        	togglecompleted={ (cid, completed) => { this.props.togglecompleted(cid, completed) } }
 			/>)
 		}
 		let list = compose(

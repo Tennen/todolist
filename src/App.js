@@ -27,6 +27,19 @@ class App extends Component {
 				}
 			})
 	}
+	toggleCompleted = (cid, completed) => {
+		post('/toggle', { "ID": cid , "completed": !completed })
+			.then(res => {
+				if(!res.err){
+					this.props.dispatch({
+						type: 'TOGGLE_TODO',
+						data: {
+							cid,
+						}
+					})
+				}
+			})
+	}
 	render() {
 	    const { dispatch, todos, showDoneList } = this.props;
 	    return (
@@ -34,7 +47,8 @@ class App extends Component {
 	        <Addtodo addtodo={ (msg) => { this.addToDo(msg) } } />
 	        <TodoList 
 	        	completed={ false } 
-	        	 todos={ todos }
+	        	todos={ todos }
+	        	togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}
 	       	/>
 	        <Chip 
 	        	style={ { marginLeft: '50px' } }
@@ -43,7 +57,12 @@ class App extends Component {
 	        >
 	        	show donelist
 	        </Chip>
-	        { showDoneList.show? <TodoList completed={ true } todos={ todos }/> : null }
+	        { showDoneList.show? <TodoList 
+	        						completed={ true } 
+	        						todos={ todos }
+	        						togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}
+	        					/> 
+	        	: null }
 	      </div>
 	    );
 	}

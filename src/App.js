@@ -40,6 +40,16 @@ class App extends Component {
 				}
 			})
 	}
+	componentWillMount(){
+		get('/todolist').then(res=>{
+			this.props.dispatch({
+				type: 'LOAD_TODO',
+				data: {
+					todolist: res
+				}
+			})
+		})
+	}
 	render() {
 	    const { dispatch, todos, showDoneList } = this.props;
 	    return (

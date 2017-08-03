@@ -10,15 +10,6 @@ import { get } from './Net/net';
 
 let store = createStore(todoApp);
 
-get('/todolist').then(res=>{
-	store.dispatch({
-		type: 'LOAD_TODO',
-		data: {
-			todolist: res
-		}
-	})
-})
-
 ReactDOM.render(
 	<MuiThemeProvider>
 		<Provider store={store}>

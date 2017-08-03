@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import _ from 'ramda';
 
-const showDoneList = (state = { show: false }, action) => {
+const showDoneList = (show = false, action) => {
 	switch(action.type) {
 		case 'TOGGLE_SHOW': 
-			return Object.assign({}, state, { show : !state.show });
+			return !show;
 		default:
-			return state;
+			return show;
 	}
 }
 

@@ -13,7 +13,7 @@ class App extends Component {
 		})
 	}
 	addToDo = (msg) => {
-		post('/addtodo', { "content": msg })
+		post('/addtodo', { content: msg })
 			.then(res => {
 				if(!res.err){
 					this.props.dispatch({
@@ -76,13 +76,13 @@ class App extends Component {
 	        	edittodo={ (cid, content) => { this.editTodo(cid, content) } }
 	       	/>
 	        <Chip 
-	        	style={ { marginLeft: '50px' } }
+	        	style={ { marginLeft: 50 } }
 	        	onClick={this.showDoneList}
 	        	onTouchTap={this.showDoneList}
 	        >
 	        	show donelist
 	        </Chip>
-	        { showDoneList.show? <TodoList 
+	        { showDoneList? <TodoList 
 	        						completed={ true } 
 	        						todos={ todos }
 	        						togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}

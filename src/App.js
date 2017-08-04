@@ -1,101 +1,91 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import TodoList from './todolist';
 import Addtodo from './addtodo';
-import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
-import { get, post } from './Net/net';
+import {get, post} from './Net/net';
+import {withHandlers, compose, pure} from 'recompose';
 
-class App extends Component {
-	showList = () => {
-		this.props.dispatch({
-			type: "TOGGLE_SHOW",
-		})
-	}
-	addToDo = (msg) => {
-		post('/addtodo', { content: msg })
-			.then(res => {
-				if(!res.err){
-					this.props.dispatch({
-						type: 'ADD_TODO', 
-						data: {
-							message: msg, 
-							completed: false,
-							id: res.id
-						}
-					})
-				}
-			})
-	}
-	toggleCompleted = (cid, completed) => {
-		post('/toggle', { "ID": cid , "completed": !completed })
-			.then(res => {
-				if(!res.err){
-					this.props.dispatch({
-						type: 'TOGGLE_TODO',
-						data: {
-							cid,
-						}
-					})
-				}
-			})
-	}
-	editTodo = (cid, content) => {
-		post('/edit', { "ID": cid , "text": content })
-			.then(res => {
-				if(!res.err){
-					this.props.dispatch({
-						type: 'EDIT_TODO',
-						data: {
-							cid,
-							content,
-						}
-					})
-				}
-			})
-	}
-	componentWillMount(){
-		get('/todolist').then(res=>{
-			this.props.dispatch({
-				type: 'LOAD_TODO',
-				data: {
-					todolist: res
-				}
-			})
-		})
-	}
-	render() {
-	    const { dispatch, todos, showDoneList } = this.props;
-	    return (
-	      <div style={ { width: '480px' } }>
-	        <Addtodo addtodo={ (msg) => { this.addToDo(msg) } } />
-	        <TodoList 
-	        	completed={ false } 
-	        	todos={ todos }
-	        	togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}
-	        	edittodo={ (cid, content) => { this.editTodo(cid, content) } }
-	       	/>
-	        <Chip 
-	        	style={ { marginLeft: 50 } }
-	        	onClick={this.showList}
-	        	onTouchTap={this.showList}
-	        >
-	        	show donelist
-	        </Chip>
-	        { showDoneList? <TodoList 
-	        						completed={ true } 
-	        						todos={ todos }
-	        						togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}
-						        	edittodo={ (cid, content) => { this.editTodo(cid, content) } }
-	        					/> 
-	        	: null }
-	      </div>
-	    );
-	}
-}
+
+const App = compose(
+    withHandlers({
+        showList: ({dispatch}) => () => {
+            dispatch({
+                type: 'TOGGLE_SHOW',
+            })
+        },
+        addToDo: ({dispatch}) => (msg) => {
+            post('/addtodo', {content: msg})
+            .then(res => {
+                if (!res.err) {
+                    dispatch({
+                        type: 'ADD_TODO',
+                        data: {
+                            message: msg,
+                            completed: false,
+                            id: res.id
+                        }
+                    })
+                }
+            })
+        },
+        toggleCompleted: ({dispatch}) => (cid, completed) => {
+            post('/toggle', {"ID": cid, "completed": !completed})
+            .then(res => {
+                if (!res.err) {
+                    dispatch({
+                        type: 'TOGGLE_TODO',
+                        data: {
+                            cid,
+                        }
+                    })
+                }
+            })
+        },
+        editTodo: ({dispatch}) => (cid, content) => {
+            post('/edit', {"ID": cid, "text": content})
+                .then(res => {
+                    if (!res.err) {
+                        dispatch({
+                            type: 'EDIT_TODO',
+                            data: {
+                                cid,
+                                content,
+                            }
+                        })
+                    }
+                })
+        }
+    }),
+)( ({addToDo, showList, toggleCompleted, editTodo, todos, showDoneList}) => (
+    <div style={ {width: '480px'} }>
+        <Addtodo addtodo={addToDo}/>
+        <TodoList
+            completed={ false }
+            todos={ todos }
+            togglecompleted={toggleCompleted}
+            edittodo={editTodo}
+        />
+        <Chip
+            style={ {marginLeft: 50} }
+            onClick={showList}
+            onTouchTap={showList}
+        >
+            show donelist
+        </Chip>
+        { showDoneList ? <TodoList
+                completed={ true }
+                todos={ todos }
+                togglecompleted={toggleCompleted}
+                edittodo={editTodo}
+            />
+            : null
+        }
+    </div>
+))
 
 export default connect(state => ({
-	showDoneList : state.showDoneList,
-	todos: state.todos
-})
+        showDoneList: state.showDoneList,
+        todos: state.todos
+    })
 )(App);

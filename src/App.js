@@ -86,6 +86,7 @@ class App extends Component {
 	        						completed={ true } 
 	        						todos={ todos }
 	        						togglecompleted={(cid, completed) => { this.toggleCompleted(cid, completed) }}
+						        	edittodo={ (cid, content) => { this.editTodo(cid, content) } }
 	        					/> 
 	        	: null }
 	      </div>

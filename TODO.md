@@ -7,3 +7,5 @@
 
 * [ ] webpack
 * [ ] babel
+
+* [ ] https://github.com/reactjs/reselect

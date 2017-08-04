@@ -5,38 +5,26 @@ import Todo from './todo';
 import {map, filter, propEq, compose} from 'ramda';
 import {withState, withHandlers, compose as compose_r} from 'recompose';
 
-class TodoList extends Component {
-    render() {
-        const {todos, togglecompleted, edittodo} = this.props;
-        const objToItem = (todo) => {
-            return (<Todo
-                cid={ todo.ID }
-                key={ todo.ID }
-                content={ todo.text }
-                completed={ todo.completed }
-                togglecompleted={ (cid, completed) => {
-                    togglecompleted(cid, completed)
-                } }
-                edittodo={ (cid, content) => {
-                    edittodo(cid, content)
-                } }
-            />)
-        }
-        const list = compose(
-            map(objToItem),
-            filter(
-                propEq("completed", this.props.completed)
-            )
-        )(todos);
-        return (
-            <List style={{flex: 1}}>
-                <Subheader>{this.props.completed ? "TodoList" : "DoneList"}</Subheader>
-                {
-                    list
-                }
-            </List>
-        )
+const TodoList = ({ list, togglecompleted, edittodo, completed }) => {
+    const objToItem = (todo) => {
+        return (<Todo
+            cid={ todo.ID }
+            key={ todo.ID }
+            content={ todo.text }
+            completed={ todo.completed }
+            togglecompleted={togglecompleted}
+            edittodo={edittodo}
+        />)
     }
+    const listitem = map(objToItem)(list)
+    return (
+        <List style={{flex: 1}}>
+            <Subheader>{!completed ? "TodoList" : "DoneList"}</Subheader>
+            {
+                listitem
+            }
+        </List>
+    )
 }
 
 export default TodoList

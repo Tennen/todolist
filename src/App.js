@@ -5,6 +5,7 @@ import Addtodo from './addtodo';
 import Chip from 'material-ui/Chip';
 import {get, post} from './Net/net';
 import {withHandlers, compose, pure} from 'recompose';
+import {propEq, filter} from 'ramda';
 
 
 const App = compose(
@@ -57,12 +58,13 @@ const App = compose(
                 })
         }
     }),
-)( ({addToDo, showList, toggleCompleted, editTodo, todos, showDoneList}) => (
+    pure,
+)( ({addToDo, showList, toggleCompleted, editTodo, todos, dones, showDoneList}) => (
     <div style={ {width: '480px'} }>
         <Addtodo addtodo={addToDo}/>
         <TodoList
             completed={ false }
-            todos={ todos }
+            list={ todos }
             togglecompleted={toggleCompleted}
             edittodo={editTodo}
         />
@@ -75,7 +77,7 @@ const App = compose(
         </Chip>
         { showDoneList ? <TodoList
                 completed={ true }
-                todos={ todos }
+                list={ dones }
                 togglecompleted={toggleCompleted}
                 edittodo={editTodo}
             />
@@ -84,8 +86,12 @@ const App = compose(
     </div>
 ))
 
-export default connect(state => ({
+export default connect(state => {
+    const todos = filter(propEq('completed', false))(state.todos);
+    const dones = filter(propEq('completed', true))(state.todos);
+    return({
         showDoneList: state.showDoneList,
-        todos: state.todos
+        todos,
+        dones,
     })
-)(App);
+})(App);

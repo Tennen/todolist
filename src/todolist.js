@@ -14,8 +14,8 @@ const TodoList = ({list, togglecompleted, edittodo, completed}) => {
             togglecompleted={togglecompleted}
             edittodo={edittodo}
         />)
-    }
-    const listitem = map(objToItem)(list)
+    };
+    const listitem = map(objToItem)(list);
     return (
         <List style={{flex: 1}}>
             <Subheader>{!completed ? "TodoList" : "DoneList"}</Subheader>
@@ -24,6 +24,6 @@ const TodoList = ({list, togglecompleted, edittodo, completed}) => {
             }
         </List>
     )
-}
+};
 
 export default TodoList

@@ -11,9 +11,9 @@ const isEditing = compose(
             toggleEditing(!isEditing);
         }
     })
-)
+);
 
-const addEditing = compose(
+const childTextField = compose(
     withState('message', 'changeMessage', ''),
     withHandlers({
         handleContentChange: ({changeMessage}) => (e, value) => {
@@ -21,14 +21,20 @@ const addEditing = compose(
         },
         handleEnter: ({cid, edittodo, message, toggleEditing}) => (e) => {
             if (e.key === 'Enter') {
-                edittodo(cid, message)
+                edittodo(cid, message);
                 toggleEditing(false);
             }
         },
     })
-)
+)(({content, handleContentChange, handleEnter}) =>
+    <TextField
+        hintText={ content }
+        onChange={ handleContentChange }
+        onKeyUp={ handleEnter }
+    />
+);
 
-const toggleDone = compose(
+const childListItem = compose(
     withState('isSwitchOn', 'toggleSwitch', null),
     withHandlers({
         toggleCompleted: ({completed, content, cid, togglecompleted, isSwitchOn, toggleSwitch}) => (event) => {
@@ -40,45 +46,33 @@ const toggleDone = compose(
             const timer = setTimeout(() => {
                 togglecompleted(cid, completed);
                 toggleSwitch(null);
-            }, 300)
+            }, 300);
             toggleSwitch(timer);
         }
     })
-)
-
-const childTextField = addEditing(({content, handleContentChange, handleEnter}) =>
-    <TextField
-        hintText={ content }
-        onChange={ handleContentChange }
-        onKeyUp={ handleEnter }
-    />
-)
-
-
-const childListItem = toggleDone(({completed, toggleCompleted, content, onDbClick}) =>
+)(({completed, toggleCompleted, content, onDbClick}) =>
     <ListItem
         leftCheckbox={<Checkbox
-            checked={ completed ? true : false }
+            checked={ !!completed }
             onCheck={ toggleCompleted }/>
         }
         primaryText={ content }
         style={ completed ? {textDecoration: 'line-through', color: 'gray'} : {} }
         onDoubleClick={ onDbClick }
     />
-)
-
+);
 
 const addBranch = branch(
-    ({isEditing}) => isEditing ? true : false,
+    ({isEditing}) => !!isEditing,
     renderComponent(childTextField),
     renderComponent(childListItem),
-)
+);
 
 const enhance = compose(isEditing, addBranch, pure);
 
 const Todo = enhance(() =>
     <div>
     </div>
-)
+);
 
 export default Todo

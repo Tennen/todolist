@@ -17,7 +17,7 @@ get('/todolist').then(res => {
             todolist: res
         }
     })
-})
+});
 
 ReactDOM.render(
     <MuiThemeProvider>

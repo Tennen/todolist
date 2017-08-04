@@ -21,7 +21,7 @@ const addMessaging = compose(
         },
     }),
     pure,
-)
+);
 
 const enhance = compose(addDataSource, addMessaging, pure);
 
@@ -38,6 +38,6 @@ const Addtodo = enhance(({todo, message, onChange, onSubmit, toEmpty}) =>
         </AutoComplete>
         <RaisedButton label="submit" onClick={ onSubmit }/>
     </div>
-)
+);
 
 export default Addtodo

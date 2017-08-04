@@ -84,7 +84,7 @@ const App = compose(
             : null
         }
     </div>
-))
+));
 
 export default connect(state => {
     const todos = filter(propEq('completed', false))(state.todos);

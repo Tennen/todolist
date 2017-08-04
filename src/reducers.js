@@ -8,7 +8,7 @@ const showDoneList = (show = false, action) => {
         default:
             return show;
     }
-}
+};
 
 const todos = (state = [], action) => {
     switch (action.type) {
@@ -16,7 +16,7 @@ const todos = (state = [], action) => {
             return [
                 ...state,
                 ...action.data.todolist,
-            ]
+            ];
 
         case 'ADD_TODO':
             return [
@@ -26,7 +26,7 @@ const todos = (state = [], action) => {
                     completed: false,
                     ID: action.data.id,
                 }
-            ]
+            ];
 
         case 'TOGGLE_TODO':
             const {cid} = action.data;
@@ -35,7 +35,7 @@ const todos = (state = [], action) => {
                     return Object.assign({}, todo, {completed: !todo.completed});
                 }
                 return todo;
-            }
+            };
             return _.map(findTargetCompleted)(state);
 
         case 'EDIT_TODO':
@@ -45,16 +45,16 @@ const todos = (state = [], action) => {
                     return Object.assign({}, todo, {text: action.data.content});
                 }
                 return todo;
-            }
+            };
             return _.map(findTargetContent)(state);
         default:
             return state;
     }
-}
+};
 
 const todoApp = combineReducers({
     todos,
     showDoneList,
-})
+});
 
 export default todoApp;

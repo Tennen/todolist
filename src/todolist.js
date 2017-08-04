@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {List, ListItem} from 'material-ui/List';
+import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Todo from './todo';
-import {map, filter, propEq, compose} from 'ramda';
-import {withState, withHandlers, compose as compose_r} from 'recompose';
+import {map} from 'ramda';
 
-const TodoList = ({ list, togglecompleted, edittodo, completed }) => {
+const TodoList = ({list, togglecompleted, edittodo, completed}) => {
     const objToItem = (todo) => {
         return (<Todo
             cid={ todo.ID }

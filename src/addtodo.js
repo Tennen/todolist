@@ -20,6 +20,7 @@ const addMessaging = compose(
             handleInput('');
         },
     }),
+    pure,
 )
 
 const enhance = compose(addDataSource, addMessaging, pure);

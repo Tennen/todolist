@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, ListItem} from 'material-ui/List';
+import {ListItem} from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import {withState, withHandlers, branch, compose, renderComponent, pure} from 'recompose';

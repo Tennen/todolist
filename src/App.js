@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import TodoList from './todolist';
 import Addtodo from './addtodo';
 import Chip from 'material-ui/Chip';
-import {get, post} from './Net/net';
+import {post} from './Net/net';
 import {withHandlers, compose, pure} from 'recompose';
 import {propEq, filter} from 'ramda';
 
@@ -17,31 +17,31 @@ const App = compose(
         },
         addToDo: ({dispatch}) => (msg) => {
             post('/addtodo', {content: msg})
-            .then(res => {
-                if (!res.err) {
-                    dispatch({
-                        type: 'ADD_TODO',
-                        data: {
-                            message: msg,
-                            completed: false,
-                            id: res.id
-                        }
-                    })
-                }
-            })
+                .then(res => {
+                    if (!res.err) {
+                        dispatch({
+                            type: 'ADD_TODO',
+                            data: {
+                                message: msg,
+                                completed: false,
+                                id: res.id
+                            }
+                        })
+                    }
+                })
         },
         toggleCompleted: ({dispatch}) => (cid, completed) => {
             post('/toggle', {"ID": cid, "completed": !completed})
-            .then(res => {
-                if (!res.err) {
-                    dispatch({
-                        type: 'TOGGLE_TODO',
-                        data: {
-                            cid,
-                        }
-                    })
-                }
-            })
+                .then(res => {
+                    if (!res.err) {
+                        dispatch({
+                            type: 'TOGGLE_TODO',
+                            data: {
+                                cid,
+                            }
+                        })
+                    }
+                })
         },
         editTodo: ({dispatch}) => (cid, content) => {
             post('/edit', {"ID": cid, "text": content})
@@ -59,7 +59,7 @@ const App = compose(
         }
     }),
     pure,
-)( ({addToDo, showList, toggleCompleted, editTodo, todos, dones, showDoneList}) => (
+)(({addToDo, showList, toggleCompleted, editTodo, todos, dones, showDoneList}) => (
     <div style={ {width: '480px'} }>
         <Addtodo addtodo={addToDo}/>
         <TodoList
@@ -89,7 +89,7 @@ const App = compose(
 export default connect(state => {
     const todos = filter(propEq('completed', false))(state.todos);
     const dones = filter(propEq('completed', true))(state.todos);
-    return({
+    return ({
         showDoneList: state.showDoneList,
         todos,
         dones,

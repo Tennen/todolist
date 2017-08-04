@@ -9,6 +9,15 @@ import {propEq, filter} from 'ramda';
 
 
 const App = compose(
+    connect(state => {
+        const todos = filter(propEq('completed', false))(state.todos);
+        const dones = filter(propEq('completed', true))(state.todos);
+        return ({
+            showDoneList: state.showDoneList,
+            todos,
+            dones,
+        })
+    }),
     withHandlers({
         showList: ({dispatch}) => () => {
             dispatch({
@@ -86,12 +95,4 @@ const App = compose(
     </div>
 ));
 
-export default connect(state => {
-    const todos = filter(propEq('completed', false))(state.todos);
-    const dones = filter(propEq('completed', true))(state.todos);
-    return ({
-        showDoneList: state.showDoneList,
-        todos,
-        dones,
-    })
-})(App);
+export default App

@@ -7,7 +7,7 @@ import Chip from 'material-ui/Chip';
 import { get, post } from './Net/net';
 
 class App extends Component {
-	showDoneList = () => {
+	showList = () => {
 		this.props.dispatch({
 			type: "TOGGLE_SHOW",
 		})
@@ -77,8 +77,8 @@ class App extends Component {
 	       	/>
 	        <Chip 
 	        	style={ { marginLeft: 50 } }
-	        	onClick={this.showDoneList}
-	        	onTouchTap={this.showDoneList}
+	        	onClick={this.showList}
+	        	onTouchTap={this.showList}
 	        >
 	        	show donelist
 	        </Chip>

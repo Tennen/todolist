@@ -69,24 +69,24 @@ const App = compose(
     }),
     pure,
 )(({addToDo, showList, toggleCompleted, editTodo, todos, dones, showDoneList}) => (
-    <div style={ {width: '480px'} }>
+    <div style={{width: '480px'}}>
         <Addtodo addtodo={addToDo}/>
         <TodoList
-            completed={ false }
-            list={ todos }
+            completed={false}
+            list={todos}
             togglecompleted={toggleCompleted}
             edittodo={editTodo}
         />
         <Chip
-            style={ {marginLeft: 50} }
+            style={{marginLeft: 50}}
             onClick={showList}
             onTouchTap={showList}
         >
             show donelist
         </Chip>
-        { showDoneList ? <TodoList
-                completed={ true }
-                list={ dones }
+        {showDoneList ? <TodoList
+                completed={true}
+                list={dones}
                 togglecompleted={toggleCompleted}
                 edittodo={editTodo}
             />

@@ -18,19 +18,23 @@ const logger = ({dispatch, getState}) => (next) => (action) => {
   return nextAction
 };
 
-const isAPI = ({dispatch, getState}) => (next) => (action) => {
+const fetchAPI = ({dispatch, getState}) => (next) => (action) => {
   const {isAPI, promise} = action.payload;
   if(isAPI) {
-
-    promise().then(res => {
-      const nextAction = { type: action.type, payload: res };
-      return next(nextAction);
+    dispatch({ type: action.type, payload: { isFetching: true } });
+      promise().then(res => {
+        const nextAction = { type: action.type, payload: { list: res, isFetching: false } };
+        return next(nextAction);
+      }).catch((err) => {
+        const errorMessage = new Error(err);
+        alert(errorMessage);
+      dispatch({ type: action.type, payload: errorMessage, error: true })
     })
   }
   return next(action);
 };
 
-const store = createStore(todoApp, applyMiddleware(isAPI, thunk, logger));
+const store = createStore(todoApp, applyMiddleware(fetchAPI, thunk, logger));
 
 // const receiveFetch = url => dispatch => {
 //   dispatch({

@@ -33,7 +33,7 @@ app.get('/todolist', (req, res) => {
     const queryResults = map(int2bool)(results)
     setTimeout(() => {
       res.send([].concat(queryResults))
-    })
+    }, 5000)
   })
 })
 

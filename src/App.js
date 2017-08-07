@@ -15,6 +15,7 @@ const App = compose(
       showDoneList: state.showDoneList,
       todos,
       dones,
+      isFetching: state.todos.isFetching,
     })
   }),
   withHandlers({
@@ -73,7 +74,7 @@ const App = compose(
     }
   }),
   pure,
-)(({addToDo, showList, toggleCompleted, editTodo, todos, dones, showDoneList}) => (
+)(({addToDo, showList, toggleCompleted, editTodo, todos, dones, isFetching, showDoneList}) => (
   <div style={{width: '480px'}}>
     <Addtodo addtodo={addToDo}/>
     <TodoList
@@ -81,6 +82,7 @@ const App = compose(
       list={todos}
       togglecompleted={toggleCompleted}
       edittodo={editTodo}
+      isFetching={isFetching}
     />
     <Chip
       style={{marginLeft: 50}}

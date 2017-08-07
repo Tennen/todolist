@@ -13,7 +13,10 @@ const showDoneList = (show = false, action) => {
 const todos = (state = {isFetching: false, list: []}, action) => {
   switch (action.type) {
     case 'LOAD_TODOS':
-      return Object.assign({}, state, { list: action.payload });
+      if(action.error){
+        return { ...state, isFetching: false };
+      }
+      return { ...state, ...action.payload };
 
     case 'ADD_TODO':
       if(action.payload.isFetching) {

@@ -31,7 +31,9 @@ app.get('/todolist', (req, res) => {
       return obj.completed === 0 ? Object.assign({}, obj, {completed: false}) : Object.assign({}, obj, {completed: true});
     }
     const queryResults = map(int2bool)(results)
-    res.send([].concat(queryResults))
+    setTimeout(() => {
+      res.send([].concat(queryResults))
+    })
   })
 })
 

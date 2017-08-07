@@ -7,7 +7,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import thunk from 'redux-thunk';
-import {get} from './Net/net';
+import { loadTodos } from './load-todo';
 
 const logger = ({dispatch, getState}) => (next) => (action) => {
   console.group(action.type);
@@ -18,36 +18,39 @@ const logger = ({dispatch, getState}) => (next) => (action) => {
   return nextAction
 };
 
-const store = createStore(todoApp, applyMiddleware(thunk, logger));
+const isAPI = ({dispatch, getState}) => (next) => (action) => {
+  const {isAPI, promise} = action.payload;
+  if(isAPI) {
 
-const receiveFetch = url => dispatch => {
-  dispatch({
-    type: 'LOAD_TODO',
-    payload: {
-      isFetching: true,
-    },
-  })
-  return get(url).then(res => {
-    dispatch({
-      type: 'LOAD_TODO',
-      payload: {
-        isFetching: false,
-        todolist: res,
-      }
+    promise().then(res => {
+      const nextAction = { type: action.type, payload: res };
+      return next(nextAction);
     })
-  })
-}
+  }
+  return next(action);
+};
 
-store.dispatch(receiveFetch('/todolist'));
+const store = createStore(todoApp, applyMiddleware(isAPI, thunk, logger));
 
-// get('/todolist').then(res => {
-//     store.dispatch({
-//         type: 'LOAD_TODO',
-//         payload: {
-//             todolist: res
-//         }
+// const receiveFetch = url => dispatch => {
+//   dispatch({
+//     type: 'LOAD_TODO',
+//     payload: {
+//       isFetching: true,
+//     },
+//   });
+//   return get(url).then(res => {
+//     dispatch({
+//       type: 'LOAD_TODO',
+//       payload: {
+//         isFetching: false,
+//         todolist: res,
+//       }
 //     })
-// });
+//   })
+// };
+
+store.dispatch(loadTodos());
 
 ReactDOM.render(
   <MuiThemeProvider>

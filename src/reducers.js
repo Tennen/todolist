@@ -12,19 +12,19 @@ const showDoneList = (show = false, action) => {
 
 const todos = (state = {isFetching: false, list: []}, action) => {
   switch (action.type) {
-    case 'LOAD_TODO':
-      if(action.payload.isFetching){
-        return Object.assign({}, state, {isFetching: true});
-      }
-      return Object.assign({}, state, {isFetching: false, list: action.payload.todolist});
+    case 'LOAD_TODOS':
+      return Object.assign({}, state, { list: action.payload });
 
     case 'ADD_TODO':
+      if(action.payload.isFetching) {
+        return Object.assign({}, state, {isFetching: true});
+      }
       const {message, id} = action.payload;
       return Object.assign({}, state, {list: [...state.list, {text: message, completed: false, ID: id}]})
 
     case 'TOGGLE_TODO':
       const findTargetCompleted = (todo) => {
-        if (todo.ID == action.payload.cid) {
+        if (todo.ID === action.payload.cid) {
           return Object.assign({}, todo, {completed: !todo.completed});
         }
         return todo;
@@ -34,12 +34,12 @@ const todos = (state = {isFetching: false, list: []}, action) => {
     case 'EDIT_TODO':
       const {content, cid} = action.payload;
       const findTargetContent = (todo) => {
-        if (todo.ID == cid) {
+        if (todo.ID === cid) {
           return Object.assign({}, todo, {text: content});
         }
         return todo;
       };
-      return Object.assign({}, state, {list: _.map(findTargetCompleted)(state.list)});
+      return Object.assign({}, state, {list: _.map(findTargetContent)(state.list)});
     default:
       return state;
   }

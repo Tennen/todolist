@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Todo from './todo';

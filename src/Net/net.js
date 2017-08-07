@@ -8,4 +8,4 @@ export const post = (url, params) => fetch(`${server}${url}`, {
     "Accept": "application/json",
   },
   body: JSON.stringify(params),
-}).then(res => res.json())
+}).then(res => res.json());

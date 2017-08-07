@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import {withState, compose, withHandlers, pure} from 'recompose';

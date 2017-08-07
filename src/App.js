@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import TodoList from './todolist';
 import Addtodo from './addtodo';
@@ -6,7 +6,6 @@ import Chip from 'material-ui/Chip';
 import {post} from './Net/net';
 import {withHandlers, compose, pure} from 'recompose';
 import {propEq, filter} from 'ramda';
-import thunk from 'redux-thunk';
 
 const App = compose(
   connect(state => {
@@ -38,12 +37,11 @@ const App = compose(
                 }
               })
             }
-          })
-        )()
+          }))()
       );
     },
     toggleCompleted: ({dispatch}) => (cid, completed) => {
-      dispatch(() => ({dispatch}) =>
+      dispatch((() => () =>
         post('/toggle', {"ID": cid, "completed": !completed})
           .then(res => {
             if (!res.err) {
@@ -54,11 +52,11 @@ const App = compose(
                 }
               })
             }
-          })
-      )
+          }))()
+      );
     },
     editTodo: ({dispatch}) => (cid, content) => {
-      dispatch(() => ({dispatch}) =>
+      dispatch((() => () =>
         post('/edit', {"ID": cid, "text": content})
           .then(res => {
             if (!res.err) {
@@ -70,8 +68,8 @@ const App = compose(
                 }
               })
             }
-          })
-      )
+          }))()
+      );
     }
   }),
   pure,
